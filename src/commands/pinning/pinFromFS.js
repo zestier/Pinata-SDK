@@ -2,7 +2,7 @@ import axios from 'axios';
 import { baseUrl } from './../../constants';
 import NodeFormData from 'form-data';
 import {validateApiKeys, validateMetadata, validatePinataOptions} from '../../util/validators';
-import basePathConverter from 'base-path-converter';
+import path from 'path';
 const fs = require('fs');
 const recursive = require('recursive-fs');
 
@@ -68,7 +68,7 @@ export default function pinFromFS(pinataApiKey, pinataSecretApiKey, sourcePath, 
                     files.forEach((file) => {
                         //for each file stream, we need to include the correct relative file path
                         data.append('file', fs.createReadStream(file), {
-                            filepath: basePathConverter(sourcePath, file)
+                            filepath: path.relative(sourcePath, file)
                         });
                     });
 
