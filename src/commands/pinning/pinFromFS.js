@@ -68,7 +68,10 @@ export default function pinFromFS(pinataApiKey, pinataSecretApiKey, sourcePath, 
                     files.forEach((file) => {
                         //for each file stream, we need to include the correct relative file path
                         data.append('file', fs.createReadStream(file), {
-                            filepath: path.relative(sourcePath, file)
+                            // moving everything into a root folder because Pinata expects all files
+                            // to be in the same folder and that file will be stripped. The alternative
+                            // is that consumers of this library must wrap their folder in an extra folder.
+                            filepath: path.join('root', path.relative(sourcePath, file))
                         });
                     });
 
